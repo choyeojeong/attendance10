@@ -40,3 +40,9 @@
 .read-the-docs {
   color: #888;
 }
+/* src/index.css 또는 src/App.css */
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}

@@ -2,8 +2,10 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '../utils/supabaseClient'
 import dayjs from 'dayjs'
+import { useNavigate } from 'react-router-dom'
 
 function StudentPage() {
+  const navigate = useNavigate()
   const [students, setStudents] = useState([])
   const [filteredStudents, setFilteredStudents] = useState([])
   const [search, setSearch] = useState('')
@@ -97,8 +99,13 @@ function StudentPage() {
     })
   }
 
+  const handleBack = () => navigate('/dashboard')
+
   return (
     <div style={styles.page}>
+      <div style={styles.header}>
+        <button onClick={handleBack} style={styles.backButton}>← 뒤로가기</button>
+      </div>
       <h2 style={styles.title}>학생 등록</h2>
       <div style={styles.form}>
         {[
@@ -118,12 +125,14 @@ function StudentPage() {
       <div style={styles.tableWrapper}>
         <table style={styles.table}>
           <thead>
-            <tr><th>#</th><th>이름</th><th>학교</th><th>학년</th><th>담당</th><th>전화</th><th>요일</th><th>테스트</th><th>수업</th><th>시작일</th><th>수정</th><th>삭제</th></tr>
+            <tr>
+              <th>#</th><th>이름</th><th>학교</th><th>학년</th><th>담당</th><th>전화</th><th>요일</th><th>테스트</th><th>수업</th><th>시작일</th><th>수정</th><th>삭제</th>
+            </tr>
           </thead>
           <tbody>
             {filteredStudents.map((s, i) => (
               <tr key={s.id}>
-                <td>{i + 1}</td><td><strong>{s.name}</strong></td><td>{s.school}</td><td>{s.grade}</td>
+                <td>{i + 1}</td><td>{s.name}</td><td>{s.school}</td><td>{s.grade}</td>
                 <td>{s.teacher}</td><td>{s.phone}</td><td>{s.one_day}</td><td>{s.one_test_time}</td>
                 <td>{s.one_class_time}</td><td>{s.first_day}</td>
                 <td><button onClick={() => handleEdit(s)}>수정</button></td>
@@ -139,14 +148,18 @@ function StudentPage() {
 
 const styles = {
   page: { padding: '24px', background: '#f9f9f9', minHeight: '100vh', width: '100vw', boxSizing: 'border-box' },
-  title: { fontSize: 28, color: '#2f80ed', marginBottom: 20 },
-  subtitle: { fontSize: 22, margin: '40px 0 16px', color: '#333' },
+  title: { fontSize: 28, color: '#2f80ed', marginBottom: 20, textAlign: 'center' },
+  subtitle: { fontSize: 22, margin: '40px 0 16px', color: '#333', textAlign: 'center' },
+  header: { marginBottom: 20 },
+  backButton: { padding: '6px 12px', backgroundColor: '#ccc', border: 'none', borderRadius: 6, cursor: 'pointer' },
   form: { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))', gap: 12, padding: 0, background: 'transparent', boxShadow: 'none', borderRadius: 0, width: '100%' },
   input: { padding: 10, fontSize: 14, border: '1px solid #ccc', borderRadius: 6 },
   button: { gridColumn: '1 / -1', padding: 14, fontSize: 16, backgroundColor: '#2f80ed', color: '#fff', fontWeight: 'bold', border: 'none', borderRadius: 8, cursor: 'pointer' },
-  search: { margin: '10px 0 20px', padding: 10, width: '100%', maxWidth: 400, border: '1px solid #ccc', borderRadius: 6 },
+  search: { margin: '10px 0 20px', padding: 10, width: '100%', maxWidth: 400, border: '1px solid #ccc', borderRadius: 6, display: 'block', marginLeft: 'auto', marginRight: 'auto' },
   tableWrapper: { width: '100%', overflowX: 'auto', display: 'flex', justifyContent: 'center' },
-  table: { width: '100%', maxWidth: '1200px', borderCollapse: 'collapse', fontSize: 14, background: '#fff' }
+  table: { width: '100%', maxWidth: '1200px', borderCollapse: 'collapse', fontSize: 14, background: '#fff', textAlign: 'center', border: '1px solid #ddd' },
+  th: { border: '1px solid #ddd', padding: 8 },
+  td: { border: '1px solid #ddd', padding: 8 }
 }
 
 export default StudentPage
